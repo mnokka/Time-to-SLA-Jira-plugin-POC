@@ -37,7 +37,7 @@ logger.info("---------- TimetoSLA started -----------")
 def customFieldManager = ComponentAccessor.getCustomFieldManager()
 // find your TTS custom field's ID and put it here instead of 10600
 
-// using ID harcdcoding intentionally 
+// using ID harcdcoding intentionally for POC
 def ttsField = customFieldManager.getCustomFieldObject("customfield_10211")
 
 // get custom field value object
@@ -93,7 +93,20 @@ if (originDate) {
    StartTiming= formatter.format(originDate)
    }
 
-	
+// Setting starting timig to custom field
+// going to use JSU/JWT to pass this information to other project's task 
+
+final customFieldName = "StartingTiming"
+def TimingField = customFieldManager.getCustomFieldObjects(issue).find { it.name == customFieldName }
+//def TimingField = customFieldManager.getCustomFieldObject("customfield_10211")	
+issue.setCustomFieldValue(TimingField, StartTiming)
+
+// Datepicker cusdtom field is needed to Time to SLA plugin customer field to use it as starting date (i.e passing used time from one project ticket to another)
+final customDateFieldNAme="TimingDateField"
+def DateField = customFieldManager.getCustomFieldObjects(issue).find { it.name == customDateFieldNAme }
+issue.setCustomFieldValue(DateField, originDate)
+
+
 
 logger.debug ("Data: $result")
 logger.info ("Issue: $issue, SLA start timing: $StartTiming")
