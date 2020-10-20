@@ -1,12 +1,14 @@
 //
-//
 // Time to SLA Jira plugin POC trial
+//
+// mika.nokka1@gmail.com 20.10.2020 ,  MIT licenced
+//
 // Vendor code  as a base:https://confluence.snapbytes.com/time-to-sla/knowledge-base/groovy-scripts-for-tts-fields
 //
 // Trying to get Time to SLA plugin custom field "starting time" and inserting it to another string custom field
 // to be used in another Time to SLA custom field as it's "starting time" 
 //
-// mika.nokka1@gmail.com 20.10.2020 ,  MIT licenced
+
 
 
 
@@ -22,17 +24,31 @@ import java.util.*
 import java.text.SimpleDateFormat
 import java.sql.Timestamp
   
+import org.apache.log4j.Logger
+import org.apache.log4j.Level  
+  
+  
+// set logging to Jira log
+def logger = Logger.getLogger("TimetoSLA") 
+logger.setLevel(Level.DEBUG) // or INFO
+logger.info("---------- TimetoSLA started -----------")
+  
 // get CustomFieldManager instance
 def customFieldManager = ComponentAccessor.getCustomFieldManager()
 // find your TTS custom field's ID and put it here instead of 10600
-def ttsField = customFieldManager.getCustomFieldObject("customfield_10600")
+
+// using ID harcdcoding intentionally 
+def ttsField = customFieldManager.getCustomFieldObject("customfield_10211")
+
 // get custom field value object
 def ttsFieldValue = issue.getCustomFieldValue(ttsField)
 // date/time formatter will be used to format date attributes
 def formatter = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss")
 // all attributes will be stored to result variable
 def result = ""
+
 // TTS custom field returns list, let's iterate
+Date originDate  
 if (ttsFieldValue && ttsFieldValue.size() > 0) {
    ttsFieldValue.each {
        String slaName = it.slaName
@@ -40,7 +56,7 @@ if (ttsFieldValue && ttsFieldValue.size() > 0) {
        String slaValueAsTimeString = it.slaValueAsString
        String originStatusName = it.originStatusName
        String targetStatusName = it.targetStatusName
-       Date originDate = it.statusDate
+       originDate = it.statusDate
        Date expectedTargetDate = it.slaTargetDate
        Date actualTargetDate = it.untilDate
        long timeLeftTillSla = it.timeToSla // if less than 0, overdue
@@ -65,9 +81,20 @@ if (ttsFieldValue && ttsFieldValue.size() > 0) {
           [Is Start Date Provided By Date Custom Field: $startDateProvidedByDateCustomField]
           [Is End Date Provided By Date Custom Field: $endDateProvidedByDateCustomField]
           [Is Negotiation Date Provided By Date Custom Field: $negotiationDateProvidedByDateCustomField]
-          <br>
        """
      }
 }
   
 result.toString()
+
+
+String StartTiming= "xxx"
+if (originDate) {
+   StartTiming= formatter.format(originDate)
+   }
+
+	
+
+logger.debug ("Data: $result")
+logger.info ("Issue: $issue, SLA start timing: $StartTiming")
+logger.info("---------- TimetoSLA ended -----------")
