@@ -1,6 +1,7 @@
 # Time-to-SLA-Jira-plugin-POC
 
-POC to get and set Time to SLA plugin datafields
+
+GetStartTime.groovy: POC to get and set Time to SLA plugin datafields
 
 Using vendor code as a base :
 https://confluence.snapbytes.com/time-to-sla/knowledge-base/groovy-scripts-for-tts-fields
@@ -14,3 +15,6 @@ Project 2 Time to SLA plugin custom field starst its' SLA time counting using pa
 This makes possible Project 2 to carry on time wise, from where Project 1 stopped working for issue
 
 Could be used for SD escalations
+
+
+
