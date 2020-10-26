@@ -1,5 +1,6 @@
 //
 // Small POC to calculate startdate in the past usign used time (currenttime-usedtime) 
+// Using millisec math and deducting timetokens directly from date value
 //
 // mika.nokka1@gmail.com 20.10.2020 ,  MIT licenced
 //
@@ -28,61 +29,54 @@ int minutes=0
 int seconds=0
 
 
-//def pattern = "yyyy-MM-dd"
-//def date = new SimpleDateFormat(pattern).parse(TimeSpentMillisecs)
+//println Locale.getDefault()
 
-
-println Locale.getDefault()
 //Date d = new Date(1317322560000)
 //Date d = new Date(80966000)
 //println d
 //print "millis: $TimeSpentMillisecs"
 
-MilliSecTime = TimeSpentMillisecs.toInteger()
-//int days = (MilliSecTime / (1000 * 60 * 60 * 24)).intValue() % 365
-//int hours = (MilliSecTime / (1000 * 60 * 60)).intValue() % 24;
-//int minutes = (MilliSecTime / (1000 * 60)).intValue() % 60
-//int seconds = (MilliSecTime / 1000).intValue() % 60;
-//println "Used time millissec string: $TimeSpentMillisecs"
-//println "days: $days hours: $hours minutes: $minutes seconds: $seconds"
 
+// Convert hardocoded some time used millisecs to date object
+MilliSecTime = TimeSpentMillisecs.toInteger()
 def FirstDateObject = MilliSecsToDate(MilliSecTime)
 //Date FirstDate = FirstDateObject.mydate
 //println "FirstDate : $FirstDateObject.mydate"
 
+
+// not logically working, millisec time is time since epoch in seventies
+// left as an Dateformatting example
 //String DateInput=days+"-"+hours+"-"+minutes+"-"+seconds
 //def pattern = "dd-MM-SS"
 //def date = new SimpleDateFormat(pattern).parse(DateInput)
 //println "Created Date object (used time since beginning January 1, 1970, 00:00:00 GMT): $date"
 
-
+// Get current date, transfer it to millisecs and back to Date object
 Date CurrentDate=new Date()
 long CurrentDateMillisecs=CurrentDate.getTime()
 println "CurrentDate: $CurrentDate (CurrentDateMillisecs:$CurrentDateMillisecs)"
 MilliSecsToDate(CurrentDateMillisecs)
 
+// Do millisec math and convert result to date object to see if it works
 long BackDatedTimeMillisecs = CurrentDateMillisecs - MilliSecTime
-println "BackDatedTimeMillisecs: $BackDatedTimeMillisecs"
+println "BackDatedTimeMillisecs (CurrentDateMillisecs - MilliSecTime): $BackDatedTimeMillisecs"
 
 Date BackDate
 (BackDate,days,hours) = MilliSecsToDate(BackDatedTimeMillisecs)
-//def BackDates = MilliSecsToDate(BackDatedTimeMillisecs)
-/*Date BackDate=BackDates[0]
-days=BackDates[0]
-hours=BackDates[1]
-minutes=BackDates[2]
-seconds=BackDates[3]
-*/
-println "BackDate: $BackDate days: $days hours: $hours minutes: $minutes seconds: $seconds"
 
+println "----------------------------------------------------------------------------------------------------------"
+println "Current date: $CurrentDate,   going back as millisecs: BackDatedTimeMillisecs"
+println "Backdated date (moved date to past): $BackDate   time tokens===> days: $days hours: $hours minutes: $minutes seconds: $seconds"
+println "----------------------------------------------------------------------------------------------------------"
 
-
-/*
+// Used hadcode millisec value timetokens to deduct hiearcically days.
 use (groovy.time.TimeCategory) {
-  println "BackDatedDate: $BackDatedDate"
-  println BackDatedDate-45.hours
+  println "Calculating directly current date - days.minutes.hours.secs"
+  HoursOff=CurrentDate-22.hours // from hardcoded millisecs timetokens
+  MinutesOff=HoursOff-29.minutes
+  SecsOff=MinutesOff-26.seconds
+  println "Date directly deducted answer: SecsOff"
 }
-*/
 
 
 // *************************************************************************************************** 
@@ -100,13 +94,13 @@ int minutes = (MilliSecTime / (1000 * 60)).intValue() % 60
 int seconds = (MilliSecTime / 1000).intValue() % 60;
 println "----> Got millisecs: $TimeSpentMillisecs"
 println "----> Calculated time tokens:  days: $days hours: $hours minutes: $minutes seconds: $seconds"
-String DateInput=days+"-"+hours+"-"+minutes+"-"+seconds
-def pattern = "dd-MM-SS"
-Date  mydate = new SimpleDateFormat(pattern).parse(DateInput)
-println "----> Created Date object: $mydate"
+//String DateInput=days+"-"+hours+"-"+minutes+"-"+seconds
+//def pattern = "dd-MM-SS"
+//Date  mydate = new SimpleDateFormat(pattern).parse(DateInput)
+//println "----> Created Date object: $mydate"
 Date DirectDate= new Date(TimeSpentMillisecs)
-println "----> Directly converted  Date object: $DirectDate"
-return [mydate,days,hours]
-//return [mydate,days,hours,minutes,seconds]
+println "----> Directly converted to Date object: $DirectDate"
+return [DirectDate,days,hours,minutes,seconds]
+
 }
 // ************************************************************************
