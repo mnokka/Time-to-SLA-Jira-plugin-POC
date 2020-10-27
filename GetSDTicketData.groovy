@@ -73,10 +73,10 @@ TheList.each {
 	  	//def String 	elapsedTime= re[0][6]  
 	  	def value1=re[0][3]
 	  	def value2=re[0][6]
-	  	Long goalDuration=value1.toInteger() // convert to int, this works
-	  	Long elapsedTime=value2.toInteger() // convert to int, this works
+	  	Long goalDuration=value1.toInteger() // issue SLA time
+	  	Long elapsedTime=value2.toInteger() // issue time spending
 		//logger.debug("${re[0][0]}")
-		logger.debug("goalDuration: ${goalDuration}     elapsedTime: $elapsedTime" )
+		logger.info("goalDuration: ${goalDuration}     elapsedTime: $elapsedTime" )
 	}
 	else {
 		//log.debug("No match" )
@@ -87,29 +87,13 @@ TheList.each {
 final SlaInformation slaInformation = getSlaInformation(pagedResponse);
 logger.debug("slaInformation: $slaInformation")
 
-//duration=slaInformation.goalDuration()
-//goalDuration
-// dies
-//final SlaInformationOngoingCycle slaInformationOngoingCycle = getSlaInformationOngoingCycle(slaInformation.getOngoingCycle());
-//logger.debug("slaInformationOngoingCycle: $slaInformationOngoingCycle")
-
-
-
-//String MYslaInformationOngoingCycle = slaInformationOngoingCycle.toString()
-//logger.debug ("MYslaInformationOngoingCycle: $MYslaInformationOngoingCycle");
-
-//Date dateStartTime = Date.from(slaInformationOngoingCycle.getStartTime())
-//logger.debug ("dateStartTime: $dateStartTime");
-
-
-
 
 logger.info("---------- SDGetter stopped -----------")
 
 
 
-// ******************************************************************************
-// ----- methods ------
+// **************************************************************************************************************************************
+// From original example
 
 
 // todo: functionalize this
@@ -121,6 +105,7 @@ SlaInformationQuery buildSlaInformationQuery(SlaInformationService slaInformatio
         .build()
 }
 
+// todo: functionalize this
 PagedResponse<SlaInformation> getSlaInformationList(SlaInformationService slaInformationService,
                                                     SlaInformationQuery query) {
     final JiraAuthenticationContext jiraAuthenticationContext = ComponentAccessor.getJiraAuthenticationContext();
@@ -128,15 +113,5 @@ PagedResponse<SlaInformation> getSlaInformationList(SlaInformationService slaInf
     return slaInformationService.getInfo(applicationUser, query)
 }
 
-SlaInformation getSlaInformation( PagedResponse<SlaInformation> pagedResponse ) {
-    return pagedResponse.getResults().find { "Time to resolution".equals(it.getName()) }
-}
-
-
-// dies
-SlaInformationOngoingCycle getSlaInformationOngoingCycle(Optional<SlaInformationOngoingCycle> optionalSlaInformationOngoingCycle) {
-    if(optionalSlaInformationOngoingCycle.empty()) { return null; }
-    return optionalSlaInformationOngoingCycle.get();
-}
-
+//******************************************************************************************************************************************
 
