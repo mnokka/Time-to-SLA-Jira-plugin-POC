@@ -14,8 +14,11 @@ JSU (or similar) automation plugin passes date picker custom field data to Proje
 Project 2 Time to SLA plugin custom field starst its' SLA time counting using passed date information (from date picker). 
 This makes possible Project 2 to carry on time wise, from where Project 1 stopped working for issue
 
-Could be used for SD escalations
+Could be used for SD escalations  
+...........................................................................................................................
 
 
-
-GenerateStartedDate.groovy: Experimenting with date and time conversion (mmillsec math, deducting time directly from date)
+GenerateStartedDate.groovy: Experimenting with date and time conversion (mmillsec math, deducting time directly from date) <br>
+...........................................................................................................................  
+   
+GetSDTicketData.groovy: POC to get SD ticket elapsed time and SLA time
