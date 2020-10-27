@@ -31,6 +31,8 @@ import org.apache.log4j.Logger
 import org.apache.log4j.Level  
 import java.util.regex.Pattern
 
+
+// to get SD libraries for use
 @WithPlugin("com.atlassian.servicedesk")
 @PluginModule
 
@@ -57,11 +59,12 @@ logger.debug("pagedResponse: $pagedResponse")
 
 
 List TheList=pagedResponse.getResults()
-Size= TheList.size()
-logger.debug("TheList: $TheList")
-logger.debug("Size: $Size")
+def Size= TheList.size()
+//logger.debug("TheList: $TheList")
+//logger.debug("Size: $Size")
 
 
+// Quick way to get wished timing info out from list. There must be nicer way...
 TheList.each {
     //logger.debug("ITEM: $it")
 	def re = it.toString() =~ /(.+)(goalDuration=)(\d+)(.+)(elapsedTime=)(\d+)(.+)/   // SlaInformationImpl{id=8, name=TaskSLAForTesting, completedCycles=[], ongoingCycle=Optional[SlaInformationOngoingCycleImpl{startTime=2020-10-27T07:51:59.258Z, breachTime=Optional[2020-10-28T20:24:59.258Z], breached=false, paused=false, withinCalendarHours=true, goalDuration=131580000, elapsedTime=3631211, remainingTime=127948789}]}
@@ -83,18 +86,14 @@ TheList.each {
 	}
 }
 
-
-final SlaInformation slaInformation = getSlaInformation(pagedResponse);
-logger.debug("slaInformation: $slaInformation")
-
-
+//final SlaInformation slaInformation = getSlaInformation(pagedResponse);
+//logger.debug("slaInformation: $slaInformation")
 logger.info("---------- SDGetter stopped -----------")
 
 
 
 // **************************************************************************************************************************************
-// From original example
-
+// From original example, the methods
 
 // todo: functionalize this
 SlaInformationQuery buildSlaInformationQuery(SlaInformationService slaInformationService, 
